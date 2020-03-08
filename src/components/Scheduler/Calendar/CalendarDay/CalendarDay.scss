@@ -1,0 +1,41 @@
+$borderWidth: 2px;
+
+.calendar-day {
+  position: relative;
+  width: 20%;
+  height: 100vh;
+
+  .calendar-day-underlay-container {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+
+    .calendar-day-underlay {
+      width: 100%;
+      height: 25px;
+
+      box-shadow: 0 0 0 1px black;
+    }
+  }
+
+  .calendar-day-classes-container {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+
+    .calendar-day-class {
+      position: absolute;
+      // box-shadow: 0 0 0 1px purple;
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      text-align: center;
+    }
+  }
+}

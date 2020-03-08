@@ -1,0 +1,12 @@
+.scheduler {
+  display: flex;
+  width: 100%;
+
+  .calendar-container {
+    flex: 4;
+  }
+
+  .options-container {
+    flex: 1;
+  }
+}
