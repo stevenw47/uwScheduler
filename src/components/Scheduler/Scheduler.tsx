@@ -20,9 +20,6 @@ export const Scheduler: FunctionComponent<SchedulerProps> = ({
   // console.log(coursesInfo);
   const coursesInfo = MOCK_DATA as any;
 
-  // const classesInfo: ClassInfo[] = [];
-  // const classesEnabledFlags: boolean[] = [];
-
   const [classesInfo, setClassesInfo] = useState<ClassInfo[] | null>(null);
   const [classesEnabledFlags, setClassesEnabledFlags] = useState<
     boolean[] | null
@@ -30,30 +27,41 @@ export const Scheduler: FunctionComponent<SchedulerProps> = ({
   const [classesColors, setClassesColors] = useState<string[] | null>(null);
 
   useEffect(() => {
-    const classesInfo: ClassInfo[] = [];
-    const classesEnabledFlags: boolean[] = [];
-    const classesColors: string[] = [];
+    if (coursesInfo) {
+      const classesInfo: ClassInfo[] = [];
+      const classesEnabledFlags: boolean[] = [];
+      const classesColors: string[] = [];
 
-    // first, flatten coursesInfo into classesInfo
-    for (const courseInfo of coursesInfo) {
-      const { sections, ...courseInfoWithoutSections } = courseInfo;
-      for (const section of sections) {
-        // filter out TST since we don't really care about those
-        if (!section.section.includes('TST')) {
-          classesInfo.push({
-            ...courseInfoWithoutSections,
-            section: section,
-          });
-          classesEnabledFlags.push(true);
-          classesColors.push(
-            colorPalette[classesColors.length % colorPalette.length],
-          );
+      // first, flatten coursesInfo into classesInfo
+      for (const [courseIndex, courseInfo] of coursesInfo.entries()) {
+        const { sections, ...courseInfoWithoutSections } = courseInfo;
+        for (const section of sections) {
+          // filter out TST since we don't really care about those
+          if (!section.section.includes('TST')) {
+            classesInfo.push({
+              ...courseInfoWithoutSections,
+              section: section,
+            });
+            classesEnabledFlags.push(true);
+            // if (section.section.includes('LEC')) {
+            //   classesColors.push(
+            //     colorPalette.dark[courseIndex % colorPalette.dark.length],
+            //   );
+            // } else {
+            //   classesColors.push(
+            //     colorPalette.light[courseIndex % colorPalette.light.length],
+            //   );
+            // }
+            classesColors.push(
+              colorPalette.light[courseIndex % colorPalette.light.length],
+            );
+          }
         }
       }
+      setClassesInfo(classesInfo);
+      setClassesEnabledFlags(classesEnabledFlags);
+      setClassesColors(classesColors);
     }
-    setClassesInfo(classesInfo);
-    setClassesEnabledFlags(classesEnabledFlags);
-    setClassesColors(classesColors);
   }, [coursesInfo]);
 
   const setClassEnabled = (classIndex: number, enabled: boolean) => {
@@ -76,7 +84,7 @@ export const Scheduler: FunctionComponent<SchedulerProps> = ({
         )}
       </div>
       <div className="options-container">
-        {classesEnabledFlags && classesColors && (
+        {coursesInfo && classesEnabledFlags && classesColors && (
           <Options
             coursesInfo={coursesInfo}
             classesEnabledFlags={classesEnabledFlags}
@@ -90,50 +98,6 @@ export const Scheduler: FunctionComponent<SchedulerProps> = ({
 };
 
 const MOCK_DATA = [
-  {
-    subject: 'CO',
-    catalogNumber: '342',
-    title: 'Introduction to Graph Theory',
-    note: null,
-    sections: [
-      {
-        classNumber: 3641,
-        section: 'LEC 001',
-        date: {
-          startTime: 10,
-          endTime: 11.33,
-          weekdays: ['T', 'Th'],
-        },
-        location: {
-          building: 'PHY',
-          room: '313',
-        },
-        instructors: ['Haxell,Penny'],
-      },
-    ],
-  },
-  {
-    subject: 'PMATH',
-    catalogNumber: '336',
-    title: 'Introduction to Group Theory with Applications',
-    note: null,
-    sections: [
-      {
-        classNumber: 3627,
-        section: 'LEC 001',
-        date: {
-          startTime: 8.5,
-          endTime: 9.33,
-          weekdays: ['M', 'W', 'F'],
-        },
-        location: {
-          building: 'MC',
-          room: '4021',
-        },
-        instructors: ['Madill,Blake'],
-      },
-    ],
-  },
   {
     subject: 'CS',
     catalogNumber: '466',
@@ -181,6 +145,94 @@ const MOCK_DATA = [
           room: null,
         },
         instructors: [],
+      },
+    ],
+  },
+  {
+    subject: 'CO',
+    catalogNumber: '342',
+    title: 'Introduction to Graph Theory',
+    note: null,
+    sections: [
+      {
+        classNumber: 3641,
+        section: 'LEC 001',
+        date: {
+          startTime: 10,
+          endTime: 11.33,
+          weekdays: ['T', 'Th'],
+        },
+        location: {
+          building: 'PHY',
+          room: '313',
+        },
+        instructors: ['Haxell,Penny'],
+      },
+    ],
+  },
+  {
+    subject: 'CO',
+    catalogNumber: '351',
+    title: 'Network Flow Theory',
+    note: null,
+    sections: [
+      {
+        classNumber: 3642,
+        section: 'LEC 001',
+        date: {
+          startTime: 11.5,
+          endTime: 12.33,
+          weekdays: ['M', 'W', 'F'],
+        },
+        location: {
+          building: 'MC',
+          room: '2038',
+        },
+        instructors: ['Pei,Martin'],
+      },
+    ],
+  },
+  {
+    subject: 'CO',
+    catalogNumber: '454',
+    title: 'Scheduling',
+    note: null,
+    sections: [
+      {
+        classNumber: 3643,
+        section: 'LEC 001',
+        date: {
+          startTime: 10,
+          endTime: 11.33,
+          weekdays: ['M', 'W'],
+        },
+        location: {
+          building: 'MC',
+          room: '4064',
+        },
+        instructors: ['Cheriyan,Joseph'],
+      },
+    ],
+  },
+  {
+    subject: 'PMATH',
+    catalogNumber: '336',
+    title: 'Introduction to Group Theory with Applications',
+    note: null,
+    sections: [
+      {
+        classNumber: 3627,
+        section: 'LEC 001',
+        date: {
+          startTime: 8.5,
+          endTime: 9.33,
+          weekdays: ['M', 'W', 'F'],
+        },
+        location: {
+          building: 'MC',
+          room: '4021',
+        },
+        instructors: ['Madill,Blake'],
       },
     ],
   },

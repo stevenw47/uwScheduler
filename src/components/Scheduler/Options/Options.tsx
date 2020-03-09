@@ -16,7 +16,6 @@ export const Options: FunctionComponent<OptionsProps> = ({
   setClassEnabled,
   classesColors,
 }) => {
-  console.log(classesEnabledFlags);
   let classIndex = 0;
   return (
     <div className="options">

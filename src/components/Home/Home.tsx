@@ -8,7 +8,7 @@ interface HomeProps {}
 export const Home: FunctionComponent<HomeProps> = () => {
   // const [coursesInputString, setCoursesInputString] = useState('');
   const [coursesInputString, setCoursesInputString] = useState(
-    'CO342, PMATH336, CS466, KOREA101R',
+    'CS466, CO342, CO351, CO454, PMATH336, KOREA101R',
   );
   const [coursesList, setCoursesList] = useState<string[]>([]);
 
@@ -37,10 +37,12 @@ export const Home: FunctionComponent<HomeProps> = () => {
         <TextInput
           value={coursesInputString}
           autoFocus={true}
-          placeholder={'CO342, CO351, CO454, PMATH336, CS466, KOREA101R'}
+          placeholder={'CS466, CO342, CO351, CO454, PMATH336, KOREA101R'}
           onChange={handleChange}
           onKeyPress={handleKeyPress}
         />
+      </div>
+      <div className="search-results">
         {coursesList.length && <Scheduler coursesList={coursesList} />}
       </div>
     </div>

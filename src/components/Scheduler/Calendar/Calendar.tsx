@@ -7,6 +7,27 @@ import {
   ClassInfo,
 } from 'components/common/types';
 
+export const START_TIME = 8.5; // 8:30am
+export const END_TIME = 21; // 9:00pm
+export const INTERVAL_LENGTH = 0.5; // 30 minute intervals
+
+interface TimeBlock {
+  startTime: number;
+  endTime: number;
+}
+
+export const timeBlocks: TimeBlock[] = [];
+
+const timeBlock = {
+  startTime: START_TIME,
+  endTime: START_TIME + INTERVAL_LENGTH,
+};
+while (timeBlock.endTime <= END_TIME) {
+  timeBlocks.push({ ...timeBlock });
+  timeBlock.startTime += INTERVAL_LENGTH;
+  timeBlock.endTime += INTERVAL_LENGTH;
+}
+
 interface CalendarProps {
   classesInfo: ClassInfo[];
   classesEnabledFlags: boolean[];
@@ -42,8 +63,27 @@ export const Calendar: FunctionComponent<CalendarProps> = ({
     }
   }
 
+  const style = {
+    height: `calc(25px * 25)`,
+  };
   return (
-    <div className="calendar">
+    <div className="calendar" style={style}>
+      <div className="calendar-time-container">
+        {timeBlocks.map(({ startTime, endTime }) => {
+          const hour = Math.floor(startTime / 1);
+          const minute = startTime % 1 !== 0 ? (startTime % 1) * 60 : '00';
+          const formattedStartTime =
+            hour <= 12
+              ? `${hour}:${minute} ${hour < 12 ? 'AM' : 'PM'}`
+              : `${hour % 12}:${minute} PM`;
+          return (
+            <div className="calendar-time">
+              <div className="calendar-time-tick" />
+              <span>{formattedStartTime}</span>
+            </div>
+          );
+        })}
+      </div>
       {Object.values(Weekdays).map((day, index) => {
         return (
           <CalendarDay

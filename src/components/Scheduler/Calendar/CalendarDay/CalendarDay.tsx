@@ -2,27 +2,7 @@ import React, { FunctionComponent } from 'react';
 import './CalendarDay.scss';
 import { isBetween } from 'utils/numbers';
 import { Weekdays, ClassInfo } from 'components/common/types';
-
-const START_TIME = 8.5; // 8:30am
-const END_TIME = 21; // 9:00pm
-const INTERVAL_LENGTH = 0.5; // 30 minute intervals
-
-interface TimeBlock {
-  startTime: number;
-  endTime: number;
-}
-
-const timeBlocks: TimeBlock[] = [];
-
-const timeBlock = {
-  startTime: START_TIME,
-  endTime: START_TIME + INTERVAL_LENGTH,
-};
-while (timeBlock.endTime <= END_TIME) {
-  timeBlocks.push({ ...timeBlock });
-  timeBlock.startTime += INTERVAL_LENGTH;
-  timeBlock.endTime += INTERVAL_LENGTH;
-}
+import { timeBlocks, START_TIME } from '../Calendar';
 
 interface CalendarDayProps {
   day: Weekdays;

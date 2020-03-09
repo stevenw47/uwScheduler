@@ -1,7 +1,4 @@
-// palette is from https://flatuicolors.com/palette/ca
-// store div containing the colors as a global variable
-// copy([...temp1.children].map(x => x.style.background))
-export const colorPalette = [
+const canadianColorPalette = [
   'rgb(255, 159, 243)',
   'rgb(254, 202, 87)',
   'rgb(255, 107, 107)',
@@ -23,3 +20,18 @@ export const colorPalette = [
   'rgb(131, 149, 167)',
   'rgb(34, 47, 62)',
 ];
+
+// palette is from https://flatuicolors.com/palette/ca
+// store div containing the colors as a global variable
+// copy([...temp1.children].map(x => x.style.background))
+export const colorPalette = {
+  all: canadianColorPalette,
+  dark: [
+    ...canadianColorPalette.slice(5, 10),
+    ...canadianColorPalette.slice(15, 20),
+  ],
+  light: [
+    ...canadianColorPalette.slice(0, 5),
+    ...canadianColorPalette.slice(10, 15),
+  ],
+};
