@@ -90,10 +90,10 @@ export const useCoursesInfo = (term: number, courseNames: string[]) => {
       if (match) {
         const subject = match[1];
         const catalogNumber = match[2];
+        // TODO: use env variable for this, e.g. http://localhost:5000 when locally but https://uw-scheduler-api.herokuapp.com/ in prod
         const res = await fetch(
-          `http://localhost:5000/course?term=${term}&subject=${subject}&catalogNumber=${catalogNumber}`,
+          `https://uw-scheduler-api.herokuapp.com/course?term=${term}&subject=${subject}&catalogNumber=${catalogNumber}`,
         );
-        console.log(process.env);
         const resJson = await res.json();
         const data = resJson.data;
         return data;
