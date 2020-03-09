@@ -73,9 +73,6 @@ const processCourseInfo = (courseInfo: any): CourseInfo => {
   };
 };
 
-// TODO: FIX THIS
-const key = process.env.REACT_APP_UWATERLOO_OPEN_API_KEY ?? '';
-
 const courseReg = /([a-z]+)([\d].+)/i;
 
 // TODO: use type for courseNames
@@ -94,9 +91,9 @@ export const useCoursesInfo = (term: number, courseNames: string[]) => {
         const subject = match[1];
         const catalogNumber = match[2];
         const res = await fetch(
-          `https://api.uwaterloo.ca/v2/courses/${subject}/${catalogNumber}/schedule.json?term=${term}&key=${key}`,
-          // `https://api.uwaterloo.ca/v2/terms/${term}/${subject}/${catalogNumber}/schedule.json?key=${key}`,
+          `http://localhost:5000/course?term=${term}&subject=${subject}&catalogNumber=${catalogNumber}`,
         );
+        console.log(process.env);
         const resJson = await res.json();
         const data = resJson.data;
         return data;

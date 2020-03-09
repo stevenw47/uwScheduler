@@ -77,7 +77,7 @@ export const Calendar: FunctionComponent<CalendarProps> = ({
               ? `${hour}:${minute} ${hour < 12 ? 'AM' : 'PM'}`
               : `${hour % 12}:${minute} PM`;
           return (
-            <div className="calendar-time">
+            <div key={startTime} className="calendar-time">
               <div className="calendar-time-tick" />
               <span>{formattedStartTime}</span>
             </div>

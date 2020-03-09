@@ -16,9 +16,9 @@ export const Scheduler: FunctionComponent<SchedulerProps> = ({
   coursesList,
 }) => {
   // TODO: have input for term?
-  // const coursesInfo = useCoursesInfo(1205, coursesList);
-  // console.log(coursesInfo);
-  const coursesInfo = MOCK_DATA as any;
+  const coursesInfo = useCoursesInfo(1205, coursesList);
+  console.log(coursesInfo);
+  // const coursesInfo = MOCK_DATA as any;
 
   const [classesInfo, setClassesInfo] = useState<ClassInfo[] | null>(null);
   const [classesEnabledFlags, setClassesEnabledFlags] = useState<
