@@ -2,8 +2,16 @@
   margin: 75px 150px;
 
   .title {
-    h1 {
+    .title-text {
       text-align: center;
+    }
+  }
+
+  .search-bar {
+    display: flex;
+    justify-content: center;
+    .uw-scheduler-field {
+      width: 600px;
     }
   }
 }

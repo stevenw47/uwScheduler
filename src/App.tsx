@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { FunctionComponent } from 'react';
 import { Home } from './components/Home/Home';
-import './App.css';
+import './App.scss';
 
-const App: React.FC = () => {
+const App: FunctionComponent = () => {
   return (
-    <div className="App">
+    <div className="app">
       <Home />
     </div>
   );

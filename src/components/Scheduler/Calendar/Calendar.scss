@@ -1,33 +1,76 @@
+// TODO: don't duplicate the flex:1 and flex:10
 .calendar {
   display: flex;
-  // box-shadow: 0 0 0 2px black;
+  flex-direction: column;
 
-  .calendar-time-container {
-    width: 10%;
+  .calendar-day-divider {
+    width: 1px;
+    height: 100%;
 
-    .calendar-time {
-      position: relative;
-      width: 100%;
-      height: 25px;
+    background: black;
+  }
 
-      .calendar-time-tick {
-        position: absolute;
-        top: 0;
-        right: 0;
-        width: 10px;
-        height: 2px;
-        background: rgba(0, 0, 0, 0.3);
+  .calendar-heading-container {
+    display: flex;
+    height: 30px;
+
+    .calendar-heading-time-container {
+      flex: 1;
+    }
+
+    .calendar-heading-day-container {
+      flex: 10;
+      display: flex;
+
+      .calendar-heading-day {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        .calendar-heading-day-text {
+          font-weight: 600;
+        }
       }
+    }
+  }
+  .calendar-body-container {
+    display: flex;
 
-      span {
-        position: absolute;
-        top: -4px;
-        right: 11px;
-        height: 10px;
-        line-height: 10px;
-        font-size: 10px;
-        color: rgba(0, 0, 0, 0.5);
+    .calendar-time-container {
+      flex: 1;
+
+      .calendar-time {
+        position: relative;
+        width: 100%;
+        height: 25px;
+
+        .calendar-time-tick {
+          position: absolute;
+          top: 0;
+          right: 0;
+          width: 10px;
+          height: 1px;
+
+          background: black;
+        }
+
+        .calendar-time-text {
+          position: absolute;
+          top: -4px;
+          right: 11px;
+          height: 10px;
+
+          line-height: 10px;
+          font-size: 10px;
+          color: rgba(0, 0, 0, 0.8);
+        }
       }
+    }
+
+    .calendar-day-container {
+      display: flex;
+      flex: 10;
     }
   }
 }

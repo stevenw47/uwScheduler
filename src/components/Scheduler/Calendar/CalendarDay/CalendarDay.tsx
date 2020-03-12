@@ -47,24 +47,18 @@ export const CalendarDay: FunctionComponent<CalendarDayProps> = ({
     <div className="calendar-day">
       <div className="calendar-day-underlay-container">
         {timeBlocks.map(({ startTime, endTime }) => {
-          const style = {
-            background:
-              startTime % 1 === 0
-                ? even
-                  ? 'rgba(0,0,0,0.2)'
-                  : 'rgba(0,0,0,0.0)'
-                : 'rgba(0,0,0,0.3)',
-          };
+          const colorClass =
+            startTime % 1 === 0 ? (even ? 'light-grey' : 'white') : 'dark-grey';
+
           return (
             <div
               key={`${startTime}-${endTime}`}
-              className="calendar-day-underlay"
-              style={style}
+              className={`calendar-day-underlay ${colorClass}`}
             />
           );
         })}
       </div>
-      <div className="calendar-day-classes-container">
+      <div className="calendar-day-class-container">
         {classes.map((_class: ClassInfo, index: number) => {
           const section = _class.section;
           const top = `${(section.date.startTime - START_TIME) * 2 * 25}px`;

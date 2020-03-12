@@ -16,8 +16,8 @@ export const Scheduler: FunctionComponent<SchedulerProps> = ({
   coursesList,
 }) => {
   // TODO: have input for term?
-  const coursesInfo = useCoursesInfo(1205, coursesList);
-  // const coursesInfo = MOCK_DATA as any;
+  // const coursesInfo = useCoursesInfo(1205, coursesList);
+  const coursesInfo = MOCK_DATA as any;
 
   const [classesInfo, setClassesInfo] = useState<ClassInfo[] | null>(null);
   const [classesEnabledFlags, setClassesEnabledFlags] = useState<
@@ -73,24 +73,24 @@ export const Scheduler: FunctionComponent<SchedulerProps> = ({
 
   return (
     <div className="scheduler">
-      <div className="calendar-container">
-        {classesInfo && classesEnabledFlags && classesColors && (
+      <div className="calendar-wrapper">
+        {classesInfo && classesEnabledFlags && classesColors ? (
           <Calendar
             classesInfo={classesInfo}
             classesEnabledFlags={classesEnabledFlags}
             classesColors={classesColors}
           />
-        )}
+        ) : null}
       </div>
-      <div className="options-container">
-        {coursesInfo && classesEnabledFlags && classesColors && (
+      <div className="options-wrapper">
+        {coursesInfo && classesEnabledFlags && classesColors ? (
           <Options
             coursesInfo={coursesInfo}
             classesEnabledFlags={classesEnabledFlags}
             setClassEnabled={setClassEnabled}
             classesColors={classesColors}
           />
-        )}
+        ) : null}
       </div>
     </div>
   );
