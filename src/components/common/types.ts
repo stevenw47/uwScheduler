@@ -30,7 +30,7 @@ export interface SectionInfo {
     weekdays: WeekdaysAbbreviated[];
   };
   location: string;
-  instructors: string[];
+  instructors: string;
 }
 
 // for a single course (KOREA101R) , it has a list of sections associated to it (LEC001, LEC002, TUT101, TUT102, TUT103)

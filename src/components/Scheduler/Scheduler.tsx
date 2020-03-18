@@ -1,23 +1,25 @@
 import React, { FunctionComponent, useState, useEffect } from 'react';
 import { useCoursesInfo } from 'hooks/useCoursesInfo';
 import { Calendar } from './Calendar/Calendar';
-import './Scheduler.scss';
 import { ClassInfo } from 'components/common/types';
 import { Options } from './Options/Options';
 import { colorPalette } from 'constants/colors';
+import './Scheduler.scss';
 
 type CourseName = string;
 
 interface SchedulerProps {
   coursesList: CourseName[];
+  term: number;
 }
 
 export const Scheduler: FunctionComponent<SchedulerProps> = ({
   coursesList,
+  term,
 }) => {
   // TODO: have input for term?
-  // const coursesInfo = useCoursesInfo(1205, coursesList);
-  const coursesInfo = MOCK_DATA as any;
+  const coursesInfo = useCoursesInfo(term, coursesList);
+  // const coursesInfo = MOCK_DATA as any;
 
   const [classesInfo, setClassesInfo] = useState<ClassInfo[] | null>(null);
   const [classesEnabledFlags, setClassesEnabledFlags] = useState<
@@ -35,26 +37,14 @@ export const Scheduler: FunctionComponent<SchedulerProps> = ({
       for (const [courseIndex, courseInfo] of coursesInfo.entries()) {
         const { sections, ...courseInfoWithoutSections } = courseInfo;
         for (const section of sections) {
-          // filter out TST since we don't really care about those
-          if (!section.section.includes('TST')) {
-            classesInfo.push({
-              ...courseInfoWithoutSections,
-              section: section,
-            });
-            classesEnabledFlags.push(true);
-            // if (section.section.includes('LEC')) {
-            //   classesColors.push(
-            //     colorPalette.dark[courseIndex % colorPalette.dark.length],
-            //   );
-            // } else {
-            //   classesColors.push(
-            //     colorPalette.light[courseIndex % colorPalette.light.length],
-            //   );
-            // }
-            classesColors.push(
-              colorPalette.light[courseIndex % colorPalette.light.length],
-            );
-          }
+          classesInfo.push({
+            ...courseInfoWithoutSections,
+            section: section,
+          });
+          classesEnabledFlags.push(true);
+          classesColors.push(
+            colorPalette.light[courseIndex % colorPalette.light.length],
+          );
         }
       }
       setClassesInfo(classesInfo);
@@ -115,7 +105,7 @@ const MOCK_DATA = [
           building: 'RCH',
           room: '308',
         },
-        instructors: ['Lau,Lap Chi'],
+        instructors: 'Lap Chi Lau',
       },
       {
         classNumber: 5365,
@@ -129,21 +119,7 @@ const MOCK_DATA = [
           building: 'RCH',
           room: '308',
         },
-        instructors: ['Lau,Lap Chi'],
-      },
-      {
-        classNumber: 4079,
-        section: 'TST 101',
-        date: {
-          startTime: 19,
-          endTime: 20.83,
-          weekdays: ['W'],
-        },
-        location: {
-          building: null,
-          room: null,
-        },
-        instructors: [],
+        instructors: 'Lap Chi Lau',
       },
     ],
   },
@@ -162,10 +138,10 @@ const MOCK_DATA = [
           weekdays: ['T', 'Th'],
         },
         location: {
-          building: 'PHY',
-          room: '313',
+          building: 'MC',
+          room: '2017',
         },
-        instructors: ['Haxell,Penny'],
+        instructors: 'Penny Haxell',
       },
     ],
   },
@@ -187,7 +163,7 @@ const MOCK_DATA = [
           building: 'MC',
           room: '2038',
         },
-        instructors: ['Pei,Martin'],
+        instructors: 'Martin Pei',
       },
     ],
   },
@@ -209,7 +185,7 @@ const MOCK_DATA = [
           building: 'MC',
           room: '4064',
         },
-        instructors: ['Cheriyan,Joseph'],
+        instructors: 'Joseph Cheriyan',
       },
     ],
   },
@@ -231,7 +207,7 @@ const MOCK_DATA = [
           building: 'MC',
           room: '4021',
         },
-        instructors: ['Madill,Blake'],
+        instructors: 'Blake Madill',
       },
     ],
   },
@@ -253,7 +229,7 @@ const MOCK_DATA = [
           building: 'REN',
           room: '2107',
         },
-        instructors: ['Kim,Young Gon'],
+        instructors: 'Young Gon Kim',
       },
       {
         classNumber: 4132,
@@ -267,7 +243,7 @@ const MOCK_DATA = [
           building: 'REN',
           room: '2107',
         },
-        instructors: ['Kim,Young Gon'],
+        instructors: 'Young Gon Kim',
       },
       {
         classNumber: 4140,
@@ -281,7 +257,7 @@ const MOCK_DATA = [
           building: 'REN',
           room: '2107',
         },
-        instructors: ['Kang,Youngoak'],
+        instructors: 'Youngoak Kang',
       },
       {
         classNumber: 4141,
@@ -295,7 +271,7 @@ const MOCK_DATA = [
           building: 'REN',
           room: '2102',
         },
-        instructors: ['Cho,Grace'],
+        instructors: 'Grace Cho',
       },
       {
         classNumber: 4142,
@@ -309,7 +285,7 @@ const MOCK_DATA = [
           building: 'REN',
           room: '2102',
         },
-        instructors: ['Kim,Wonhee'],
+        instructors: 'Wonhee Kim',
       },
     ],
   },

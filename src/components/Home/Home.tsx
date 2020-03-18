@@ -2,6 +2,7 @@ import React, { FunctionComponent, useState, useCallback } from 'react';
 import { TextInput } from 'components/common/TextInput/TextInput';
 import './Home.scss';
 import { Scheduler } from 'components/Scheduler/Scheduler';
+import { faCalendarAlt } from '@fortawesome/free-solid-svg-icons';
 
 interface HomeProps {}
 
@@ -9,40 +10,68 @@ export const Home: FunctionComponent<HomeProps> = () => {
   const [coursesInputString, setCoursesInputString] = useState(
     'CS466, CO342, CO351, CO454, PMATH336, KOREA101R',
   );
-  const [coursesList, setCoursesList] = useState<string[]>([]);
+  const [termInputString, setTermInputString] = useState('1205');
 
-  const handleChange = useCallback(
+  const [coursesList, setCoursesList] = useState<string[]>([]);
+  const [term, setTerm] = useState<number>();
+
+  const updateCoursesListAndTerm = useCallback(() => {
+    // TODO: some validation here?
+    setCoursesList(coursesInputString.replace(/\s/g, '').split(','));
+    setTerm(Number(termInputString));
+  }, [coursesInputString, termInputString]);
+
+  const handleCoursesChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
       setCoursesInputString(event.target.value);
     },
     [],
   );
-  const handleKeyPress = useCallback(
+  const handleCoursesKeyPress = useCallback(
     (event: React.KeyboardEvent<HTMLInputElement>) => {
       if (event.key === 'Enter') {
-        setCoursesList(coursesInputString.replace(/\s/g, '').split(','));
+        updateCoursesListAndTerm();
       }
     },
-    [coursesInputString],
+    [updateCoursesListAndTerm],
   );
 
-  // TODO: add an icon on left of search bar, and maybe an submit button on right?
+  const handleTermChange = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      setTermInputString(event.target.value);
+    },
+    [],
+  );
+
   return (
     <div className="home">
       <div className="title">
         <h1 className="title-text">uwScheduler</h1>
       </div>
       <div className="search-bar">
-        <TextInput
-          value={coursesInputString}
-          autoFocus={true}
-          placeholder={'CS466, CO342, CO351, CO454, PMATH336, KOREA101R'}
-          onChange={handleChange}
-          onKeyPress={handleKeyPress}
-        />
+        <div className="input-courses">
+          <TextInput
+            value={coursesInputString}
+            autoFocus={true}
+            placeholder={'CS466, CO342, CO351, CO454, PMATH336, KOREA101R'}
+            onChange={handleCoursesChange}
+            onKeyPress={handleCoursesKeyPress}
+            rightIcon={faCalendarAlt}
+            onRightIconClick={updateCoursesListAndTerm}
+          />
+        </div>
+        <div className="input-term">
+          <TextInput
+            value={termInputString}
+            placeholder={'1205'}
+            onChange={handleTermChange}
+          />
+        </div>
       </div>
       <div className="search-results">
-        {coursesList.length ? <Scheduler coursesList={coursesList} /> : null}
+        {coursesList.length && term ? (
+          <Scheduler coursesList={coursesList} term={term} />
+        ) : null}
       </div>
     </div>
   );

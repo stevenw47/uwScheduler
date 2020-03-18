@@ -26,38 +26,30 @@ export const Options: FunctionComponent<OptionsProps> = ({
             className="options-course"
           >
             <div className="options-course-title">
-              {`${courseInfo.subject}${courseInfo.catalogNumber}`}
+              <span className="options-course-title-text">{`${courseInfo.subject}${courseInfo.catalogNumber}`}</span>
             </div>
             <div className="options-course-sections">
               {courseInfo.sections.map(section => {
-                // filter out TST since we don't really care about those
-                // also otherwise the number of courses will be off from the parent
-                // TODO: filter out TST at the very beginning or something?
-                if (!section.section.includes('TST')) {
-                  const currentClassIndex = classIndex;
-                  ++classIndex;
-                  const handleChange = (
-                    event: React.ChangeEvent<HTMLInputElement>,
-                  ) => {
-                    setClassEnabled(
-                      currentClassIndex,
-                      !classesEnabledFlags[currentClassIndex],
-                    );
-                  };
-                  return (
-                    <div
-                      key={section.classNumber}
-                      style={{ color: classesColors[currentClassIndex] }}
-                    >
-                      <CheckboxInput
-                        labelText={`${section.section} ${section.instructors}`}
-                        checked={classesEnabledFlags[currentClassIndex]}
-                        onChange={handleChange}
-                      />
-                    </div>
+                const currentClassIndex = classIndex;
+                ++classIndex;
+                const handleChange = (
+                  event: React.ChangeEvent<HTMLInputElement>,
+                ) => {
+                  setClassEnabled(
+                    currentClassIndex,
+                    !classesEnabledFlags[currentClassIndex],
                   );
-                }
-                return null;
+                };
+                return (
+                  <div key={section.classNumber}>
+                    <CheckboxInput
+                      checkboxColor={classesColors[currentClassIndex]}
+                      labelText={`${section.section} - ${section.instructors}`}
+                      checked={classesEnabledFlags[currentClassIndex]}
+                      onChange={handleChange}
+                    />
+                  </div>
+                );
               })}
             </div>
           </div>

@@ -25,6 +25,17 @@ const processWeekdays = (weekdaysShort: string) => {
   throw Error(`Invalid weekdaysShort ${weekdaysShort}`);
 };
 
+const processInstructors = (instructorsCommaArray: string[]) => {
+  return instructorsCommaArray
+    .map(instructorComma =>
+      instructorComma
+        .split(',')
+        .reverse()
+        .join(' '),
+    )
+    .join(', ');
+};
+
 // courseInfo is from the uwaterloo api
 // TODO: the variables are named badly...
 // const processCourseInfo = (courseInfo: courseInfoType): CourseInfo => {
@@ -60,7 +71,7 @@ const processCourseInfo = (courseInfo: any): CourseInfo => {
         weekdays: processWeekdays(date.weekdays) as WeekdaysAbbreviated[],
       },
       location,
-      instructors,
+      instructors: processInstructors(instructors),
     });
   }
 
@@ -74,6 +85,8 @@ const processCourseInfo = (courseInfo: any): CourseInfo => {
 };
 
 const courseReg = /([a-z]+)([\d].+)/i;
+
+const backendUrl = process.env.REACT_APP_BACKEND_URL ?? 'http://localhost:5000';
 
 // TODO: use type for courseNames
 export const useCoursesInfo = (term: number, courseNames: string[]) => {
@@ -90,9 +103,8 @@ export const useCoursesInfo = (term: number, courseNames: string[]) => {
       if (match) {
         const subject = match[1];
         const catalogNumber = match[2];
-        // TODO: use env variable for this, e.g. http://localhost:5000 when locally but https://uw-scheduler-api.herokuapp.com/ in prod
         const res = await fetch(
-          `https://uw-scheduler-api.herokuapp.com/course?term=${term}&subject=${subject}&catalogNumber=${catalogNumber}`,
+          `${backendUrl}/course?term=${term}&subject=${subject}&catalogNumber=${catalogNumber}`,
         );
         const resJson = await res.json();
         const data = resJson.data;
@@ -105,7 +117,11 @@ export const useCoursesInfo = (term: number, courseNames: string[]) => {
       const newCoursesInfo = [];
       for (const courseName of courseNames) {
         const courseInfo = await getCourseInfo(courseName);
-        newCoursesInfo.push(processCourseInfo(courseInfo));
+        // filter out TST
+        const courseInfoWithoutTST = courseInfo.filter(
+          (x: any) => !x.section.includes('TST'),
+        );
+        newCoursesInfo.push(processCourseInfo(courseInfoWithoutTST));
       }
       setCoursesInfo(newCoursesInfo);
     }

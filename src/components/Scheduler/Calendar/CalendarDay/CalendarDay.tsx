@@ -19,7 +19,7 @@ const overlapOrder = (classes: ClassInfo[], _class: ClassInfo) => {
       isBetween(startTime, c.section.date.startTime, c.section.date.endTime) ||
       isBetween(endTime, c.section.date.startTime, c.section.date.endTime),
   );
-  return classes.indexOf(_class) + 1;
+  return classes.indexOf(_class);
 };
 
 const numOverlap = (classes: ClassInfo[], _class: ClassInfo) => {
@@ -62,9 +62,8 @@ export const CalendarDay: FunctionComponent<CalendarDayProps> = ({
         {classes.map((_class: ClassInfo, index: number) => {
           const section = _class.section;
           const top = `${(section.date.startTime - START_TIME) * 2 * 25}px`;
-          const left = `${100 -
-            overlapOrder(classes, _class) *
-              (100 / numOverlap(classes, _class))}%`;
+          const left = `${overlapOrder(classes, _class) *
+            (100 / numOverlap(classes, _class))}%`;
           const width = `${100 / numOverlap(classes, _class)}%`;
           const height = `${(section.date.endTime - section.date.startTime) *
             2 *
@@ -82,9 +81,11 @@ export const CalendarDay: FunctionComponent<CalendarDayProps> = ({
               key={section.classNumber}
               style={style}
             >
-              {`${_class.subject}${_class.catalogNumber}`}
-              <br />
-              {`${section.section}`}
+              <span className="class-info">
+                {`${_class.subject}${_class.catalogNumber}`}
+                <br />
+                {`${section.section}`}
+              </span>
             </div>
           );
         })}

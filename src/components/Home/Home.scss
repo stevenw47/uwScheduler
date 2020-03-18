@@ -1,5 +1,5 @@
 .home {
-  margin: 75px 150px;
+  margin: 5vh 5vw;
 
   .title {
     .title-text {
@@ -10,8 +10,16 @@
   .search-bar {
     display: flex;
     justify-content: center;
-    .uw-scheduler-field {
+    .input-courses {
       width: 600px;
     }
+    .input-term {
+      width: 75px;
+      margin-left: 25px;
+    }
   }
+}
+
+::-webkit-scrollbar {
+  width: 0px; /* Remove scrollbar space */
 }

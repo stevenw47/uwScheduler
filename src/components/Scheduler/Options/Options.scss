@@ -1,4 +1,16 @@
 .options {
   display: flex;
   flex-direction: column;
+  margin-left: 10px;
+
+  .options-course {
+    margin-bottom: 10px;
+
+    .options-course-title {
+      margin-bottom: 5px;
+      .options-course-title-text {
+        font-size: 18px;
+      }
+    }
+  }
 }

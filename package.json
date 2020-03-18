@@ -3,7 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "homepage": "https://stevenw47.github.io/uwScheduler",
+  "proxy": "http://localhost:5000/",
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^1.2.27",
+    "@fortawesome/free-solid-svg-icons": "^5.12.1",
+    "@fortawesome/react-fontawesome": "^0.1.9",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
@@ -23,7 +27,7 @@
     "predeploy": "yarn run build",
     "deploy": "gh-pages -d build",
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "REACT_APP_BACKEND_URL=https://uw-scheduler-api.herokuapp.com react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "start:all": "concurrently \"react-scripts start\" \"node server/server.js\""
@@ -41,6 +45,7 @@
     ]
   },
   "devDependencies": {
+    "@types/express": "^4.17.3",
     "@types/jest": "^24.0.0",
     "@types/node": "^12.0.0",
     "@types/react": "^16.9.0",

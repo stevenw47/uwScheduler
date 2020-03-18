@@ -1,4 +1,4 @@
-import React, { FunctionComponent, ReactNode } from 'react';
+import React, { FunctionComponent, ReactElement } from 'react';
 import './Calendar.scss';
 import { CalendarDay } from './CalendarDay/CalendarDay';
 import {
@@ -28,15 +28,18 @@ while (timeBlock.endTime <= END_TIME) {
   timeBlock.endTime += INTERVAL_LENGTH;
 }
 
-// TODO: node or element ???
-const addDividers = (reactNodes: ReactNode[]) => {
+const addDividers = (reactNodes: ReactElement[]) => {
   const dividedReactNodes = [];
   if (reactNodes.length > 0) {
-    dividedReactNodes.push(<div className="calendar-day-divider" />);
+    dividedReactNodes.push(
+      <div key={'divider-0'} className="calendar-day-divider" />,
+    );
   }
-  for (const reactNode of reactNodes) {
+  for (const [index, reactNode] of reactNodes.entries()) {
     dividedReactNodes.push(reactNode);
-    dividedReactNodes.push(<div className="calendar-day-divider" />);
+    dividedReactNodes.push(
+      <div key={`divider-${index + 1}`} className="calendar-day-divider" />,
+    );
   }
   return dividedReactNodes;
 };
