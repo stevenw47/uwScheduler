@@ -3,13 +3,31 @@
   flex-direction: column;
   margin-left: 10px;
 
+  .options-title {
+    margin-bottom: 15px;
+    .options-title-text {
+      font-size: 20px;
+      font-weight: bold;
+    }
+  }
+
   .options-course {
     margin-bottom: 10px;
 
     .options-course-title {
+      display: flex;
+      align-items: center;
       margin-bottom: 5px;
       .options-course-title-text {
         font-size: 18px;
+        margin-right: 6px;
+      }
+      .options-course-remove {
+        cursor: pointer;
+        color: rgba(0, 0, 0, 0.35);
+        &:hover {
+          color: red;
+        }
       }
     }
   }

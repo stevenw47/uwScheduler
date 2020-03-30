@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { CourseInfo, WeekdaysAbbreviated } from 'components/common/types';
+import { useCachedApiCalls } from './cachedApiCalls';
 
 const timeByColonReg = /(\d\d):(\d\d)/;
 
@@ -89,10 +90,15 @@ const courseReg = /([a-z]+)([\d].+)/i;
 const backendUrl = process.env.REACT_APP_BACKEND_URL ?? 'http://localhost:5000';
 
 // TODO: use type for courseNames
-export const useCoursesInfo = (term: number, courseNames: string[]) => {
+export const useCoursesInfo = (
+  term: number | undefined,
+  courseNames: string[],
+) => {
   // http://www.adm.uwaterloo.ca/cgi-bin/cgiwrap/infocour/salook.pl?level=under&sess=1205&subject=CO&cournum=454
 
-  const [coursesInfo, setCoursesInfo] = useState<any[] | null>(null);
+  const [cachedApiCalls, addApiCallToCache] = useCachedApiCalls();
+
+  const [coursesInfo, setCoursesInfo] = useState<any[]>([]);
 
   useEffect(() => {
     // TODO: handle errors in these things
@@ -116,17 +122,27 @@ export const useCoursesInfo = (term: number, courseNames: string[]) => {
     async function fetchData() {
       const newCoursesInfo = [];
       for (const courseName of courseNames) {
-        const courseInfo = await getCourseInfo(courseName);
-        // filter out TST
-        const courseInfoWithoutTST = courseInfo.filter(
-          (x: any) => !x.section.includes('TST'),
-        );
-        newCoursesInfo.push(processCourseInfo(courseInfoWithoutTST));
+        const key = `${term}_${courseName}`;
+        let newCourseInfo = cachedApiCalls[key];
+        if (!newCourseInfo) {
+          const courseInfo = await getCourseInfo(courseName);
+          // TODO: dont filter out here, but instead just check them for conflicts
+          // filter out TST
+          const courseInfoWithoutTST = courseInfo.filter(
+            (x: any) => !x.section.includes('TST'),
+          );
+
+          newCourseInfo = processCourseInfo(courseInfoWithoutTST);
+          addApiCallToCache(key, newCourseInfo);
+        }
+        newCoursesInfo.push(newCourseInfo);
       }
       setCoursesInfo(newCoursesInfo);
     }
-    fetchData();
-  }, [term, courseNames]);
+    if (term) {
+      fetchData();
+    }
+  }, [term, courseNames, cachedApiCalls, addApiCallToCache]);
 
   return coursesInfo;
 };

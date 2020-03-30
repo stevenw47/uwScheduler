@@ -1,8 +1,36 @@
-import React, { FunctionComponent, useState, useCallback } from 'react';
+import React, {
+  FunctionComponent,
+  useState,
+  useCallback,
+  useReducer,
+} from 'react';
 import { TextInput } from 'components/common/TextInput/TextInput';
-import './Home.scss';
 import { Scheduler } from 'components/Scheduler/Scheduler';
 import { faCalendarAlt } from '@fortawesome/free-solid-svg-icons';
+import './Home.scss';
+
+type ActionType = 'ADD_COURSES' | 'REMOVE_COURSES' | 'SET_COURSES';
+export type Action = {
+  type: ActionType;
+  data: string[];
+};
+
+const reducer = (state: string[], action: Action) => {
+  switch (action.type) {
+    case 'ADD_COURSES':
+      return [...new Set(state.concat(action.data))];
+    case 'REMOVE_COURSES':
+      const newStateSet = new Set(state);
+      for (const course of action.data) {
+        newStateSet.delete(course);
+      }
+      return [...newStateSet];
+    case 'SET_COURSES':
+      return [...new Set(action.data)];
+    default:
+      return state;
+  }
+};
 
 interface HomeProps {}
 
@@ -12,12 +40,16 @@ export const Home: FunctionComponent<HomeProps> = () => {
   );
   const [termInputString, setTermInputString] = useState('1205');
 
-  const [coursesList, setCoursesList] = useState<string[]>([]);
+  const [coursesList, dispatch] = useReducer(reducer, []);
   const [term, setTerm] = useState<number>();
 
   const updateCoursesListAndTerm = useCallback(() => {
-    // TODO: some validation here?
-    setCoursesList(coursesInputString.replace(/\s/g, '').split(','));
+    if (coursesInputString.length) {
+      // TODO: some validation here?
+      const coursesToAdd = coursesInputString.replace(/\s/g, '').split(',');
+      setCoursesInputString('');
+      dispatch({ type: 'ADD_COURSES', data: coursesToAdd });
+    }
     setTerm(Number(termInputString));
   }, [coursesInputString, termInputString]);
 
@@ -69,9 +101,7 @@ export const Home: FunctionComponent<HomeProps> = () => {
         </div>
       </div>
       <div className="search-results">
-        {coursesList.length && term ? (
-          <Scheduler coursesList={coursesList} term={term} />
-        ) : null}
+        <Scheduler coursesList={coursesList} term={term} dispatch={dispatch} />
       </div>
     </div>
   );

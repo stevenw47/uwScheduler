@@ -1,31 +1,31 @@
-import React, { FunctionComponent, useState, useEffect } from 'react';
+import React, { FunctionComponent, useState, useEffect, Dispatch } from 'react';
 import { useCoursesInfo } from 'hooks/useCoursesInfo';
 import { Calendar } from './Calendar/Calendar';
 import { ClassInfo } from 'components/common/types';
 import { Options } from './Options/Options';
 import { colorPalette } from 'constants/colors';
 import './Scheduler.scss';
+import { Action } from 'components/Home/Home';
 
 type CourseName = string;
 
 interface SchedulerProps {
   coursesList: CourseName[];
-  term: number;
+  term?: number;
+  dispatch: Dispatch<Action>;
 }
 
 export const Scheduler: FunctionComponent<SchedulerProps> = ({
   coursesList,
   term,
+  dispatch,
 }) => {
-  // TODO: have input for term?
   const coursesInfo = useCoursesInfo(term, coursesList);
   // const coursesInfo = MOCK_DATA as any;
 
-  const [classesInfo, setClassesInfo] = useState<ClassInfo[] | null>(null);
-  const [classesEnabledFlags, setClassesEnabledFlags] = useState<
-    boolean[] | null
-  >(null);
-  const [classesColors, setClassesColors] = useState<string[] | null>(null);
+  const [classesInfo, setClassesInfo] = useState<ClassInfo[]>([]);
+  const [classesEnabledFlags, setClassesEnabledFlags] = useState<boolean[]>([]);
+  const [classesColors, setClassesColors] = useState<string[]>([]);
 
   useEffect(() => {
     if (coursesInfo) {
@@ -64,23 +64,20 @@ export const Scheduler: FunctionComponent<SchedulerProps> = ({
   return (
     <div className="scheduler">
       <div className="calendar-wrapper">
-        {classesInfo && classesEnabledFlags && classesColors ? (
-          <Calendar
-            classesInfo={classesInfo}
-            classesEnabledFlags={classesEnabledFlags}
-            classesColors={classesColors}
-          />
-        ) : null}
+        <Calendar
+          classesInfo={classesInfo}
+          classesEnabledFlags={classesEnabledFlags}
+          classesColors={classesColors}
+        />
       </div>
       <div className="options-wrapper">
-        {coursesInfo && classesEnabledFlags && classesColors ? (
-          <Options
-            coursesInfo={coursesInfo}
-            classesEnabledFlags={classesEnabledFlags}
-            setClassEnabled={setClassEnabled}
-            classesColors={classesColors}
-          />
-        ) : null}
+        <Options
+          coursesInfo={coursesInfo}
+          classesEnabledFlags={classesEnabledFlags}
+          setClassEnabled={setClassEnabled}
+          classesColors={classesColors}
+          dispatch={dispatch}
+        />
       </div>
     </div>
   );
