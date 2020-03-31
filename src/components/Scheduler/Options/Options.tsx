@@ -4,9 +4,11 @@ import { CheckboxInput } from 'components/common/CheckboxInput/CheckboxInput';
 import { CourseInfo } from 'components/common/types';
 import { Action } from 'components/Home/Home';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faTimes, faExternalLinkAlt } from '@fortawesome/free-solid-svg-icons';
+import { NO_TIME } from 'hooks/useCoursesInfo';
 
 interface OptionsProps {
+  term?: number;
   coursesInfo: CourseInfo[];
   classesEnabledFlags: boolean[];
   setClassEnabled: (classIndex: number, enabled: boolean) => void;
@@ -15,6 +17,7 @@ interface OptionsProps {
 }
 
 export const Options: FunctionComponent<OptionsProps> = ({
+  term,
   coursesInfo,
   classesEnabledFlags,
   setClassEnabled,
@@ -40,7 +43,19 @@ export const Options: FunctionComponent<OptionsProps> = ({
             className="options-course"
           >
             <div className="options-course-title">
-              <span className="options-course-title-text">{`${courseInfo.subject}${courseInfo.catalogNumber}`}</span>
+              <span className="options-course-title-text">
+                {`${courseInfo.subject}${courseInfo.catalogNumber}`}
+              </span>
+              <a
+                href={`http://www.adm.uwaterloo.ca/cgi-bin/cgiwrap/infocour/salook.pl?level=under&sess=${term}&subject=${courseInfo.subject}&cournum=${courseInfo.catalogNumber}`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <FontAwesomeIcon
+                  className="options-course-link"
+                  icon={faExternalLinkAlt}
+                />
+              </a>
               <FontAwesomeIcon
                 className="options-course-remove"
                 icon={faTimes}
@@ -61,11 +76,17 @@ export const Options: FunctionComponent<OptionsProps> = ({
                         !classesEnabledFlags[currentClassIndex],
                       );
                     };
+                    const mightBeOnline =
+                      section.date.startTime === NO_TIME &&
+                      section.date.endTime === NO_TIME &&
+                      section.date.weekdays.length === 0;
                     return (
                       <div key={section.classNumber}>
                         <CheckboxInput
                           checkboxColor={classesColors[currentClassIndex]}
-                          labelText={`${section.section} - ${section.instructors}`}
+                          labelText={`${section.section} - ${
+                            section.instructors
+                          }${mightBeOnline ? ' 🌎' : ''}`}
                           checked={classesEnabledFlags[currentClassIndex]}
                           onChange={handleChange}
                         />

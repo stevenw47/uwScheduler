@@ -22,11 +22,19 @@
         font-size: 18px;
         margin-right: 6px;
       }
+      .options-course-link {
+        margin-right: 6px;
+        cursor: pointer;
+        color: rgba(0, 0, 0, 0.2);
+        &:hover {
+          color: cadetblue;
+        }
+      }
       .options-course-remove {
         cursor: pointer;
-        color: rgba(0, 0, 0, 0.35);
+        color: rgba(0, 0, 0, 0.2);
         &:hover {
-          color: red;
+          color: tomato;
         }
       }
     }

@@ -72,6 +72,7 @@ export const Scheduler: FunctionComponent<SchedulerProps> = ({
       </div>
       <div className="options-wrapper">
         <Options
+          term={term}
           coursesInfo={coursesInfo}
           classesEnabledFlags={classesEnabledFlags}
           setClassEnabled={setClassEnabled}

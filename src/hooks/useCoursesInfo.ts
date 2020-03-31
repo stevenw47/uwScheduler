@@ -2,10 +2,15 @@ import { useEffect, useState } from 'react';
 import { CourseInfo, WeekdaysAbbreviated } from 'components/common/types';
 import { useCachedApiCalls } from './cachedApiCalls';
 
+export const NO_TIME = -1;
+
 const timeByColonReg = /(\d\d):(\d\d)/;
 
-// time is like XX:XX, 24 hour time
+// timeByColon is like XX:XX, 24 hour time
 const processTime = (timeByColon: string) => {
+  if (!timeByColon) {
+    return false;
+  }
   const match = timeByColonReg.exec(timeByColon);
   if (match) {
     const hour = Number(match[1]);
@@ -19,6 +24,9 @@ const weekdaysShortReg = /([A-Z][a-z]?)/g;
 
 // weekdaysShort is like 'TTh'
 const processWeekdays = (weekdaysShort: string) => {
+  if (!weekdaysShort) {
+    return false;
+  }
   const match = weekdaysShort.match(weekdaysShortReg);
   if (match) {
     return match;
@@ -67,9 +75,10 @@ const processCourseInfo = (courseInfo: any): CourseInfo => {
       classNumber: class_number,
       section,
       date: {
-        startTime: processTime(date.start_time),
-        endTime: processTime(date.end_time),
-        weekdays: processWeekdays(date.weekdays) as WeekdaysAbbreviated[],
+        startTime: processTime(date.start_time) || NO_TIME,
+        endTime: processTime(date.end_time) || NO_TIME,
+        weekdays: (processWeekdays(date.weekdays) ||
+          []) as WeekdaysAbbreviated[],
       },
       location,
       instructors: processInstructors(instructors),
@@ -116,26 +125,38 @@ export const useCoursesInfo = (
         const data = resJson.data;
         return data;
       }
-      throw Error(`Invalid courseName ${courseName}`);
+      // throw Error(`Invalid courseName ${courseName}`);
+      return false;
     };
 
+    // TODO: clean up the code below
     async function fetchData() {
       const newCoursesInfo = [];
       for (const courseName of courseNames) {
         const key = `${term}_${courseName}`;
         let newCourseInfo = cachedApiCalls[key];
-        if (!newCourseInfo) {
-          const courseInfo = await getCourseInfo(courseName);
-          // TODO: dont filter out here, but instead just check them for conflicts
-          // filter out TST
-          const courseInfoWithoutTST = courseInfo.filter(
-            (x: any) => !x.section.includes('TST'),
-          );
-
-          newCourseInfo = processCourseInfo(courseInfoWithoutTST);
-          addApiCallToCache(key, newCourseInfo);
+        if (newCourseInfo === false) {
+          alert(`${courseName} cannot be found for term ${term}.`);
         }
-        newCoursesInfo.push(newCourseInfo);
+        if (newCourseInfo) {
+          newCoursesInfo.push(newCourseInfo);
+        } else {
+          const courseInfo = await getCourseInfo(courseName);
+          console.log('apicall courseInfo', courseInfo);
+          if (courseInfo && courseInfo.length) {
+            // TODO: dont filter out here, but instead just check them for conflicts
+            // filter out TST
+            const courseInfoWithoutTST = courseInfo.filter(
+              (x: any) => !x.section.includes('TST'),
+            );
+            newCourseInfo = processCourseInfo(courseInfoWithoutTST);
+            addApiCallToCache(key, newCourseInfo);
+            newCoursesInfo.push(newCourseInfo);
+          } else {
+            addApiCallToCache(key, courseInfo);
+            alert(`${courseName} cannot be found for term ${term}.`);
+          }
+        }
       }
       setCoursesInfo(newCoursesInfo);
     }
