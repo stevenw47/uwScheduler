@@ -1,13 +1,11 @@
 {
-  "eslint.validate": [
-    "javascript",
-    "javascriptreact",
-    "typescript",
-    "typescriptreact"
-  ],
-  "typescript.validate.enable": true,
-  "editor.tabSize": 2,
-  "editor.formatOnSave": true,
-  "files.eol": "\n",
-  "typescript.tsdk": "node_modules/typescript/lib"
+	"eslint.validate": [
+		"javascript",
+		"javascriptreact",
+		"typescript",
+		"typescriptreact"
+	],
+	"typescript.validate.enable": true,
+	"files.eol": "\n",
+	"typescript.tsdk": "node_modules/typescript/lib",
 }

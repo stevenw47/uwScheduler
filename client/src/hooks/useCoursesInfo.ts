@@ -96,7 +96,7 @@ const processCourseInfo = (courseInfo: any): CourseInfo => {
 
 const courseReg = /([a-z]+)([\d].+)/i;
 
-const backendUrl = process.env.REACT_APP_BACKEND_URL ?? 'http://localhost:5000';
+const backendUrl = process.env.REACT_APP_BACKEND_URL ?? 'http://localhost:8000';
 
 // TODO: use type for courseNames
 export const useCoursesInfo = (
@@ -118,10 +118,16 @@ export const useCoursesInfo = (
       if (match) {
         const subject = match[1];
         const catalogNumber = match[2];
+        // const res = await fetch(
+        //   `${backendUrl}/course?term=${term}&subject=${subject}&catalogNumber=${catalogNumber}`,
+        // );
+        console.log('called', subject, catalogNumber, term)
         const res = await fetch(
-          `${backendUrl}/course?term=${term}&subject=${subject}&catalogNumber=${catalogNumber}`,
+          `${backendUrl}/course/${subject}/${catalogNumber}/${term}`,
         );
+        console.log(res)
         const resJson = await res.json();
+        console.log(resJson)
         const data = resJson.data;
         return data;
       }

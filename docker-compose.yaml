@@ -1,0 +1,13 @@
+version: "3.8"
+services:
+  frontend:
+    build:
+      context: ./client
+    ports:
+      - "3000:80"
+  api:
+    build:
+      context: ./api
+    env_file: ./api/.env
+    ports:
+      - "8000:8000"

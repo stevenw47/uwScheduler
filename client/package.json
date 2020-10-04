@@ -2,21 +2,11 @@
   "name": "uwScheduler",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://stevenw47.github.io/uwScheduler",
-  "proxy": "http://localhost:5000/",
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.27",
     "@fortawesome/free-solid-svg-icons": "^5.12.1",
     "@fortawesome/react-fontawesome": "^0.1.9",
-    "@testing-library/jest-dom": "^4.2.4",
-    "@testing-library/react": "^9.3.2",
-    "@testing-library/user-event": "^7.1.2",
-    "cors": "^2.8.5",
-    "dotenv": "^8.2.0",
-    "es6-promise": "^4.2.8",
-    "express": "^4.17.1",
     "gh-pages": "^2.2.0",
-    "isomorphic-fetch": "^2.2.1",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
     "react-scripts": "^3.4.0",
@@ -27,10 +17,9 @@
     "predeploy": "yarn run build",
     "deploy": "gh-pages -d build",
     "start": "react-scripts start",
-    "build": "REACT_APP_BACKEND_URL=https://uw-scheduler-api.herokuapp.com react-scripts build",
+    "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "start:all": "concurrently \"react-scripts start\" \"node server/server.js\""
+    "eject": "react-scripts eject"
   },
   "browserslist": {
     "production": [
@@ -45,14 +34,11 @@
     ]
   },
   "devDependencies": {
-    "@types/express": "^4.17.3",
-    "@types/jest": "^24.0.0",
     "@types/node": "^12.0.0",
     "@types/react": "^16.9.0",
     "@types/react-dom": "^16.9.0",
     "@typescript-eslint/eslint-plugin": "^2.14.0",
     "@typescript-eslint/parser": "^2.14.0",
-    "concurrently": "^5.1.0",
     "eslint-config-prettier": "^6.9.0",
     "eslint-plugin-prettier": "^3.1.2",
     "prettier": "1.19.1"
