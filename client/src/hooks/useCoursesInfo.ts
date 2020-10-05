@@ -61,9 +61,14 @@ const processCourseInfo = (courseInfo: any): CourseInfo => {
   const processedClasses = [];
 
   for (const course of courseInfo) {
-    if (course.classes.length !== 1) {
-      throw Error(`Expected ${course.classes} to be an array of size 1.`);
+    // TODO: actually, this can be length > 1 in some cases, e.g. STAT230 term 1201
+    // if (course.classes.length !== 1) {
+    //   throw Error(`Expected ${course.classes} to be an array of size 1.`);
+    // }
+    if (!course.classes.length) {
+      throw Error(`Expected ${course.classes} to be an array of size at least 1.`);
     }
+
 
     const { class_number, section } = course;
 
