@@ -118,16 +118,10 @@ export const useCoursesInfo = (
       if (match) {
         const subject = match[1];
         const catalogNumber = match[2];
-        // const res = await fetch(
-        //   `${backendUrl}/course?term=${term}&subject=${subject}&catalogNumber=${catalogNumber}`,
-        // );
-        console.log('called', subject, catalogNumber, term)
         const res = await fetch(
           `${backendUrl}/course/${subject}/${catalogNumber}/${term}`,
         );
-        console.log(res)
         const resJson = await res.json();
-        console.log(resJson)
         const data = resJson.data;
         return data;
       }
@@ -148,7 +142,6 @@ export const useCoursesInfo = (
           newCoursesInfo.push(newCourseInfo);
         } else {
           const courseInfo = await getCourseInfo(courseName);
-          console.log('apicall courseInfo', courseInfo);
           if (courseInfo && courseInfo.length) {
             // TODO: dont filter out here, but instead just check them for conflicts
             // filter out TST
