@@ -35,10 +35,8 @@ const reducer = (state: string[], action: Action) => {
 interface HomeProps {}
 
 export const Home: FunctionComponent<HomeProps> = () => {
-  const [coursesInputString, setCoursesInputString] = useState(
-    'CS466, CO342, CO351, CO454, PMATH336, KOREA101R',
-  );
-  const [termInputString, setTermInputString] = useState('1205');
+  const [coursesInputString, setCoursesInputString] = useState('');
+  const [termInputString, setTermInputString] = useState('1199');
 
   const [coursesList, dispatch] = useReducer(reducer, []);
   const [term, setTerm] = useState<number>();
@@ -85,7 +83,7 @@ export const Home: FunctionComponent<HomeProps> = () => {
           <TextInput
             value={coursesInputString}
             autoFocus={true}
-            placeholder={'CS466, CO342, CO351, CO454, PMATH336, KOREA101R'}
+            placeholder={'CS341, CS350, CO456, ENGL108D, ...'}
             onChange={handleCoursesChange}
             onKeyPress={handleCoursesKeyPress}
             rightIcon={faCalendarAlt}
@@ -95,7 +93,7 @@ export const Home: FunctionComponent<HomeProps> = () => {
         <div className="input-term">
           <TextInput
             value={termInputString}
-            placeholder={'1205'}
+            placeholder={'1199'}
             onChange={handleTermChange}
           />
         </div>
