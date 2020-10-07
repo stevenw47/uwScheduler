@@ -2,6 +2,7 @@
   "name": "uwScheduler",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://stevenw47.github.io/uwScheduler",
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.27",
     "@fortawesome/free-solid-svg-icons": "^5.12.1",
@@ -14,10 +15,11 @@
     "typescript": "^3.8.3"
   },
   "scripts": {
-    "predeploy": "yarn run build",
+    "predeploy": "yarn run heroku-build",
     "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "heroku-build": "REACT_APP_BACKEND_URL=https://uw-scheduler-api.herokuapp.com react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
